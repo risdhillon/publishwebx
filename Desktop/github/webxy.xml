@@ -86,13 +86,18 @@
           return select.options[select.selectedIndex].value;
         }
 
+        function showw() {
+          window.alert("hi");
+          console.log("hiii")
+        }
+
         /** Ask calendar to go to the selected date. */
         function jumpToDate() {
           var year = parseInt(getSelectValue('year'), 10);
           var month = parseInt(getSelectValue('month'), 10);
           var date = parseInt(getSelectValue('date'), 10);
+          showw();
           google.calendar.showDate(year, month + 1, date);
-          window.alert("hey");
         }
 
         </script>
