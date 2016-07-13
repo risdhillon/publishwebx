@@ -87,8 +87,9 @@
         }
 
         function showw() {
+          google.calendar.composeEvent({title:'webex', startTime: {year: 2016, month: 7, date: 18}})
           window.alert("hi");
-          console.log("hiii")
+          console.log("hiii");
         }
 
         /** Ask calendar to go to the selected date. */
