@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-  <ModulePrefs title="__MSG_Labs_Gadget_Set_Date_Title__" author_email="calendar-gadget-questions@google.com" author="Google" description="__MSG_Labs_Gadget_Set_Date_Description__" height="61">
-    <Locale lang="en" messages="setdate/messages__en.xml"/>
-  </ModulePrefs>
+  <ModulePrefs title="does this change anything"/></ModulePrefs>
   <Content type="html">
     <![CDATA[
       publish webex
