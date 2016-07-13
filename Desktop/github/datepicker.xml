@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="__MSG_Labs_Gadget_Set_Date_Title__" author_email="calendar-gadget-questions@google.com" author="Google" description="__MSG_Labs_Gadget_Set_Date_Description__" height="61">
+    <Require feature="google.calendar-0.5"/>
+    <Require feature="dynamic-height"/>
+
+    <Locale messages="setdate/messages__en.xml"/>
+
+    <Locale lang="ar" messages="setdate/messages__ar.xml"/>
+
+    <Locale lang="bg" messages="setdate/messages__bg.xml"/>
+
+    <Locale lang="ca" messages="setdate/messages__ca.xml"/>
+
+    <Locale lang="cs" messages="setdate/messages__cs.xml"/>
+
+    <Locale lang="da" messages="setdate/messages__da.xml"/>
+
+    <Locale lang="de" messages="setdate/messages__de.xml"/>
+
+    <Locale lang="el" messages="setdate/messages__el.xml"/>
+
+    <Locale lang="en" messages="setdate/messages__en.xml"/>
+
+    <Locale lang="en-gb" messages="setdate/messages__en_GB.xml"/>
+
+    <Locale lang="es" messages="setdate/messages__es.xml"/>
+
+    <Locale lang="fi" messages="setdate/messages__fi.xml"/>
+
+    <Locale lang="fr" messages="setdate/messages__fr.xml"/>
+
+    <Locale lang="hi" messages="setdate/messages__hi.xml"/>
+
+    <Locale lang="hr" messages="setdate/messages__hr.xml"/>
+
+    <Locale lang="hu" messages="setdate/messages__hu.xml"/>
+
+    <Locale lang="in" messages="setdate/messages__in.xml"/>
+
+    <Locale lang="it" messages="setdate/messages__it.xml"/>
+
+    <Locale lang="iw" messages="setdate/messages__iw.xml"/>
+
+    <Locale lang="ja" messages="setdate/messages__ja.xml"/>
+
+    <Locale lang="ko" messages="setdate/messages__ko.xml"/>
+
+    <Locale lang="lt" messages="setdate/messages__lt.xml"/>
+
+    <Locale lang="lv" messages="setdate/messages__lv.xml"/>
+
+    <Locale lang="nl" messages="setdate/messages__nl.xml"/>
+
+    <Locale lang="no" messages="setdate/messages__no.xml"/>
+
+    <Locale lang="pl" messages="setdate/messages__pl.xml"/>
+
+    <Locale lang="pt-br" messages="setdate/messages__pt_BR.xml"/>
+
+    <Locale lang="pt-pt" messages="setdate/messages__pt_PT.xml"/>
+
+    <Locale lang="ro" messages="setdate/messages__ro.xml"/>
+
+    <Locale lang="ru" messages="setdate/messages__ru.xml"/>
+
+    <Locale lang="sk" messages="setdate/messages__sk.xml"/>
+
+    <Locale lang="sl" messages="setdate/messages__sl.xml"/>
+
+    <Locale lang="sr" messages="setdate/messages__sr.xml"/>
+
+    <Locale lang="sv" messages="setdate/messages__sv.xml"/>
+
+    <Locale lang="th" messages="setdate/messages__th.xml"/>
+
+    <Locale lang="tl" messages="setdate/messages__tl.xml"/>
+
+    <Locale lang="tr" messages="setdate/messages__tr.xml"/>
+
+    <Locale lang="uk" messages="setdate/messages__uk.xml"/>
+
+    <Locale lang="vi" messages="setdate/messages__vi.xml"/>
+
+    <Locale lang="zh-cn" messages="setdate/messages__zh_CN.xml"/>
+
+    <Locale lang="zh-tw" messages="setdate/messages__zh_TW.xml"/>
+  </ModulePrefs>
+
+
+  <Content type="html">
+
+    <![CDATA[
+      <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+        "http://www.w3.org/TR/html4/strict.dtd">
+      <html>
+      <head>
+
+      <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      body, td, select {
+        font-family: Arial;
+        font-size: 8pt;
+        margin: -1px;
+      }
+
+      #dateForm {
+        text-align: center;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        margin-bottom: 0; /* needed in IE to avoid extra whitespace at the bottom. */
+      }
+
+      #jumpButton {
+        margin-top: 5px;
+        width:89%;
+      }
+      </style>
+      <script>
+
+      var MONTHS = ["__MSG_Jan__", "__MSG_Feb__", "__MSG_Mar__", "__MSG_Apr__",
+          "__MSG_May__", "__MSG_Jun__", "__MSG_Jul__", "__MSG_Aug__",
+          "__MSG_Sep__", "__MSG_Oct__", "__MSG_Nov__", "__MSG_Dec__"];
+
+      /**
+       * Generate html for the date picker.
+       * document.write it onto the screen
+       */
+      function drawDatePicker() {
+        // Get the current date, so we can set the selected values.
+        var local_now = new Date();
+        var date = local_now.getDate();
+        var month = local_now.getMonth();
+        var year = local_now.getFullYear();
+
+        var html = '<select id=month>';
+        for (var i = 0; i < MONTHS.length; ++i) {
+          html += '<option value=' + i + (month == i ? ' SELECTED' : '') + '>' +
+              MONTHS[i] + '</option>';
+        }
+        html += '</select>';
+
+        html += '<select id=date>';
+        for (var i = 1; i < 32; ++i) {
+          html += '<option value=' + i + (date == i ? ' SELECTED' : '') +
+              '>' + i + '</option>';
+        }
+        html += '</select>';
+
+        // For now, let's use 1980-2030.
+        html += '<select id=year>';
+        for (var i = 1980; i <= 2030; ++i) {
+          html += '<option value=' + i + (year == i ? ' SELECTED' : '') + '>' +
+              i + '</option>';
+        }
+        html += '</select>';
+        document.write(html);
+      }
+
+      /**
+       * Get the selected value for a specific <select> box.
+       * @param {string} id The id of the select box.
+       */
+      function getSelectValue(id) {
+        var select = document.getElementById(id)
+        return select.options[select.selectedIndex].value;
+      }
+
+      /** Ask calendar to go to the selected date. */
+      function jumpToDate() {
+        var year = parseInt(getSelectValue('year'), 10);
+        var month = parseInt(getSelectValue('month'), 10);
+        var date = parseInt(getSelectValue('date'), 10);
+        google.calendar.showDate(year, month + 1, date);
+      }
+
+      </script>
+      </head>
+      <body>
+
+      <form id=dateForm onsubmit="return false">
+        <script>
+        drawDatePicker()
+        </script>
+      <button id=jumpButton 
+          onclick="jumpToDate()">__MSG_Labs_Gadget_Set_Date_Button__</button>
+      </form>
+
+      <script>
+
+      // Force the screen to resize
+      gadgets.window.adjustHeight();
+
+      </script>
+      </body>
+      </html>
+    ]]>
+  </Content>
+</Module>
