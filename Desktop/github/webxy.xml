@@ -92,7 +92,6 @@
           var month = parseInt(getSelectValue('month'), 10);
           var date = parseInt(getSelectValue('date'), 10);
           google.calendar.showDate(year, month + 1, date);
-          google.calendar.composeEvent(year, month + 1, date);
           window.alert("hey");
         }
 
