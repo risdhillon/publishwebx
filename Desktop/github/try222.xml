@@ -120,7 +120,6 @@
           var year = parseInt(getSelectValue('year'), 10);
           var month = parseInt(getSelectValue('month'), 10);
           var date = parseInt(getSelectValue('date'), 10);
-          google.calendar.showDate(year, month + 1, date);
           compose();
           console.log("should have worked");
         }
