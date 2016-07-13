@@ -99,7 +99,7 @@
 
             // Within the data model, the end time is EXCLUSIVE. So the endTime MUST
             // be on the day after the start time.
-            endTime: {year: 2009, month: 12, date: 26},
+            endTime: {year: 2016, month: 12, date: 26},
 
             // Note that attendees MUST be sent in contact format.
             attendees: [
@@ -110,6 +110,8 @@
             rrule: 'RRULE:FREQ=YEARLY'
         };
           console.log("compose called");
+          google.calendar.composeEvent(eventData);
+          console.log("composed hopsefully")
         }
     
 
@@ -120,7 +122,6 @@
           var date = parseInt(getSelectValue('date'), 10);
           google.calendar.showDate(year, month + 1, date);
           compose();
-          google.calendar.composeEvent(eventData);
           console.log("should have worked");
         }
 
