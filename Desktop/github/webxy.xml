@@ -86,33 +86,31 @@
           return select.options[select.selectedIndex].value;
         }
 
-        <!-- function showw() {
-          google.calendar.composeEvent({title:'webex', startTime: {year: 2016, month: 7, date: 18}})
-          window.alert("hi");
-          console.log("hiii");
-        } -->
+
 
         function compose() {
-        var eventData = {
-          title: 'Christmas',
-          details: 'webex for you!',
-          location: 'My webexlink',
-          allDay: true,
+          var eventData = {
+            title: 'Christmas',
+            details: 'webex for you!',
+            location: 'My webexlink',
+            allDay: true,
 
-          startTime: {year: 2016, month: 12, date: 25},
+            startTime: {year: 2016, month: 12, date: 25},
 
-          // Within the data model, the end time is EXCLUSIVE. So the endTime MUST
-          // be on the day after the start time.
-          endTime: {year: 2009, month: 12, date: 26},
+            // Within the data model, the end time is EXCLUSIVE. So the endTime MUST
+            // be on the day after the start time.
+            endTime: {year: 2009, month: 12, date: 26},
 
-          // Note that attendees MUST be sent in contact format.
-          attendees: [
-            {email: 'davem.gadgets@gmail.com'}
-          ],
+            // Note that attendees MUST be sent in contact format.
+            attendees: [
+              {email: 'davem.gadgets@gmail.com'}
+            ],
 
-      // For more RRULE examples, please see http://www.ietf.org/rfc/rfc2445.txt
-          rrule: 'RRULE:FREQ=YEARLY'
+        // For more RRULE examples, please see http://www.ietf.org/rfc/rfc2445.txt
+            rrule: 'RRULE:FREQ=YEARLY'
         };
+          console.log("compose called");
+        }
     
 
         /** Ask calendar to go to the selected date. */
@@ -121,8 +119,9 @@
           var month = parseInt(getSelectValue('month'), 10);
           var date = parseInt(getSelectValue('date'), 10);
           google.calendar.showDate(year, month + 1, date);
+          compose();
           google.calendar.composeEvent(eventData);
-          console.log("should have worked")
+          console.log("should have worked");
         }
 
         </script>
