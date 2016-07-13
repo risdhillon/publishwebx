@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
   <ModulePrefs title="__MSG_Labs_Gadget_Set_Date_Title__">
+
   </ModulePrefs>
   <Content type="html">
     <![CDATA[
@@ -101,7 +102,7 @@
           <script>
           drawDatePicker()
           </script>
-        <button id=jumpButton 
+          <button id=jumpButton 
             onclick="jumpToDate()">__MSG_Labs_Gadget_Set_Date_Button__</button>
         </form>
 
