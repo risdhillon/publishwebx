@@ -14,7 +14,23 @@
       <script>
       
       function runxml() {
-        console.log("hi");}
+        console.log("hi");
+
+        var url = "https://acmetsp-n.webex.com/WBXService/XMLService";
+                                        
+        var xml = '<?xml version="1.0" encoding="utf-8"?> <serv:message xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:serv="http://www.webex.com/schemas/2002/06/service" xmlns:schemaLocation="http://www.webex.com/schemas/2002/06/service http://www.webex.com/schemas/2002/06/service/service.xsd"> <header> <securityContext> <webExID>ridhillo</webExID> <password>P@ss1234</password> <siteName>acmetsp-n</siteName> </securityContext> </header> <body> <bodyContent xsi:type="java:com.webex.service.binding.meeting.CreateMeeting"> <accessControl> <meetingPassword>Cisco123</meetingPassword> </accessControl> <metaData> <confName>Test Meeting</confName> <location></location> </metaData> <participants> <attendees> <attendee> <person> <email>johitchc@cisco.com</email> </person> <emailInvitations>TRUE</emailInvitations> </attendee> </attendees> </participants> <schedule> <startDate /> </schedule> <telephony> <telephonySupport>NONE</telephonySupport> </telephony> <attendeeOptions> <emailInvitations>TRUE</emailInvitations> </attendeeOptions> </bodyContent> </body> </serv:message>'
+                                        
+        var options =
+        {
+          "method" : "post",
+          "payload" : xml,
+          "contentType" : "application/xml"
+        };
+                          
+        var output = UrlFetchApp.fetch(url, options).getContentText();
+        console.log(output);
+                          
+      }
                           
       
 
