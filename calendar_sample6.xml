@@ -23,11 +23,14 @@
 
         function makeDOMRequest() {    
           var params = {};  
+          console.log("hi2");
           params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM;  
-          var url = "http://www.google.com";  
+          var url = "https://raw.githubusercontent.com/risdhillon/publishwebx/master/found.xml";  
           gadgets.io.makeRequest(url, response, params);
           console.log(gadgets.io.makeRequest(url, response, params));
         };
+
+        makeDOMRequest();
 
         console.log("aftermakeDom");
 
