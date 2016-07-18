@@ -144,13 +144,13 @@ function addWebex() {
                 // If the current event's ID isn't in the hash table,
                 // add it to the list of events to check locations
                 if (!(newEvents[e].getId() in checkedEvents)) {
-                    // Logger.log(newEvents[e].getId() + " is not in hash table");
+                    // console.log(newEvents[e].getId() + " is not in hash table");
                     uncheckedEvents.push(newEvents[e]);
                 }
 
             }
       
-            // Logger.log(uncheckedEvents.length + " events to check");
+            // console.log(uncheckedEvents.length + " events to check");
       
             // Go through all unchecked events
             for (j = 0; j < uncheckedEvents.length; j++) {
@@ -189,7 +189,7 @@ function addWebex() {
                     var link = ics.substring(start, end);
                   
                     uncheckedEvents[j].setDescription("Join WebEx meeting: " + link);
-                    Logger.log(uncheckedEvents[j].getTitle() + " was changed");
+                    console.log(uncheckedEvents[j].getTitle() + " was changed");
                 }
         
                 // Add the event's ID to the hash table of checked events
@@ -202,7 +202,7 @@ function addWebex() {
     
         }
       
-        Logger.log("End");
+        console.log("End");
 
         // Wait one second before executing again
         // (To Do: find a better way, this is bad)
@@ -215,7 +215,7 @@ function addWebex() {
 function parseXml() {
    var url = 'http://googleappsdeveloper.blogspot.com/atom.xml';
    var xml = UrlFetchApp.fetch(url).getContentText();
-   Logger.log(xml);
+   console.log(xml);
    var document = XmlService.parse(xml);
    var root = document.getRootElement();
    var atom = XmlService.getNamespace('http://www.w3.org/2005/Atom');
@@ -228,7 +228,7 @@ function parseXml() {
      for (var j = 0; j < categoryElements.length; j++) {
        labels.push(categoryElements[j].getAttribute('term').getValue());
      }
-     Logger.log('%s (%s)', title, labels.join(', '));
+     console.log('%s (%s)', title, labels.join(', '));
    }
  }
 
