@@ -28,6 +28,8 @@
           gadgets.io.makeRequest(url, response, params);
         };
 
+        console.log("aftermakeDom");
+
         function response(obj) { 
           console.log(obj.data);
           console.log("ok");
