@@ -50,7 +50,7 @@
 
     for (i = 0; i < 126; i++) {
       calendar.createEvent("Test", start, end, {location: "WebEx"});
-        Logger.log("Event created");
+        console.log("Event created");
 
         if (i % 9 == 8) {
             start.setDate(start.getDate()+1);
@@ -86,7 +86,7 @@ function removeEvents() {
   
     for (i = 0; i < events.length; i++) {
         events[i].deleteEvent();
-        Logger.log("Event deleted");
+        console.log("Event deleted");
     }
   
 }
@@ -249,7 +249,7 @@ function parse() {
   
   var link = ics.substring(start, end);
   
-  Logger.log(link);
+  console.log(link);
   
 }
       </script>
