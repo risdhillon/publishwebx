@@ -77,7 +77,7 @@
       </script>
 
       <center>
-      <button onclick="compose()">Compose Event</button>
+      <button onclick="runxml()">Compose Event</button>
       </center>
 
       </body>
