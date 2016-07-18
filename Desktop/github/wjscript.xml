@@ -127,7 +127,7 @@ function addWebex() {
     // Gets all calendars that the current user can modify descriptions in
     // (Note: this should be polled at some interval, right now if the user
     //  gains/loses access to a calendar it would result in bugs)
-    var calendars = CalendarApp.getAllOwnedCalendars();
+    var calendars = google.calendar;
   
     // Number of time steps to be taken
     for (t = 0; t < 1; t++) {
