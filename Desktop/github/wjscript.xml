@@ -72,7 +72,7 @@
 
 function removeEvents() {
   
-    var calendar = CalendarApp.getDefaultCalendar();
+    var calendar = google.calendar;
   
     var start = new Date();
     start.setDate(start.getDate()+1);
