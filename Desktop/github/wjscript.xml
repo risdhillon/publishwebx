@@ -137,6 +137,7 @@ function addWebex() {
       
             // Get all events in the next two weeks
             newEvents = calendars[i].getEvents(start, end);
+            console.log(newEvents);
       
             // Go through each event
             for (e = 0; e < newEvents.length; e++) {
@@ -150,7 +151,7 @@ function addWebex() {
 
             }
       
-            // console.log(uncheckedEvents.length + " events to check");
+            console.log(uncheckedEvents.length + " events to check");
       
             // Go through all unchecked events
             for (j = 0; j < uncheckedEvents.length; j++) {
@@ -201,7 +202,9 @@ function addWebex() {
             uncheckedEvents = [];
     
         }
-      
+        
+
+
         console.log("End");
 
         // Wait one second before executing again
