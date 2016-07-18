@@ -106,7 +106,7 @@ function sleep(duration) {
 // (To Do: integrate WebEx API to populate description with new meeting information)
 function addWebex() {
   
-    Logger.log("Begin");
+    console.log("Begin");
   
     // Hash table to hold IDs of all events already checked
     var checkedEvents = {};
