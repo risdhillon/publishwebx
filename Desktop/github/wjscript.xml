@@ -128,14 +128,13 @@
           // Number of time steps to be taken
           for (t = 0; t < 1; t++) {
 
-          console.log(calendars.length)
-          
+
               // Check each calendar that the user owns
-              for (i = 0; i < calendars.length; i++) {
-              
+        
+                  
                     // Get all events in the next two weeks
-                    newEvents = calendars[i].getEvents(start, end);
-                    console.log(newEvents);
+                    newEvents = calendars.getEvents(start, end);
+                    console.log("numof newevents:" + newEvents);
               
                     // Go through each event
                     for (e = 0; e < newEvents.length; e++) {
@@ -147,7 +146,7 @@
                             uncheckedEvents.push(newEvents[e]);
                         }
 
-                    }
+                  
               
                     console.log(uncheckedEvents.length + " events to check");
               
