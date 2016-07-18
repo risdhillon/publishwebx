@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="composeEvent Test" author_email="calendar-gadget-questions@google.com" author="Google" height="40">
+    <Require feature="google.calendar-0.5"/>
+  </ModulePrefs>
+
+  <Content type="html">
+
+  <![CDATA[
+      
+      <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+      "http://www.w3.org/TR/html4/strict.dtd">
+      <html>
+      <body>
+
+      <script>
+      function compose() {
+        var eventData = {
+          title: 'webbbbb',
+          details: 'Merry Christmas to you!',
+          location: 'My house',
+          allDay: true,
+
+          startTime: {year: 2016, month: 7, date: 19},
+
+          // Within the data model, the end time is EXCLUSIVE. So the //endTime MUST
+          // be on the day after the start time.
+          endTime: {year: 2016, month: 7, date: 20},
+
+          // Note that attendees MUST be sent in contact format.
+          //attendees: [
+          {email: 'davem.gadgets@gmail.com'}
+          ],
+
+      // For more RRULE examples, please see http://www.ietf.org/rfc/rfc2445.txt
+          rrule: 'RRULE:FREQ=YEARLY'
+        };
+        google.calendar.composeEvent(eventData);
+      }
+      </script>
+
+      <center>
+      <button onclick="compose()">Compose Event</button>
+      </center>
+
+      </body>
+      </html>
+    ]]>
+  </Content>
+</Module>
