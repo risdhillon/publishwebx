@@ -133,7 +133,8 @@
         
                   
                     // Get all events in the next two weeks
-                    newEvents = calendars.getEvents(start, end);
+                    console.log("before get events");
+                    newEvents = google.calendar.getEventsResults(start, end);
                     console.log("numof newevents:" + newEvents);
               
                     // Go through each event
