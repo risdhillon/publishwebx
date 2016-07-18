@@ -19,7 +19,7 @@
           location: 'https://signin.webex.com/collabs/auth?service=it&from=hostmeeting&TrackID=&hbxref=&goid=host-meeting',
           allDay: true,
 
-          startTime: {year: 2016, month: 6, date: 18},
+          startTime: {year: 2016, month: 7, date: 19},
 
           // Within the data model, the end time is EXCLUSIVE. So the endTime MUST
           // be on the day after the start time.
@@ -38,182 +38,180 @@
 
       function createEvents() {
 
-    var calendar = google.calendar;
+        var calendar = google.calendar;
 
-    var start = new Date();
-    start.setDate(start.getDate()+1);
-    start.setHours(8, 0, 0, 0)
+        var start = new Date();
+        start.setDate(start.getDate()+1);
+        start.setHours(8, 0, 0, 0)
     
-    var end = new Date();
-    end.setDate(start.getDate());
-    end.setHours(9, 0, 0, 0)
+        var end = new Date();
+        end.setDate(start.getDate());
+        end.setHours(9, 0, 0, 0)
 
-    for (i = 0; i < 126; i++) {
-      calendar.createEvent("Test", start, end, {location: "WebEx"});
-        console.log("Event created");
+        for (i = 0; i < 126; i++) {
+          calendar.createEvent("Test", start, end, {location: "WebEx"});
+            console.log("Event created");
 
-        if (i % 9 == 8) {
-            start.setDate(start.getDate()+1);
-            start.setHours(8);
+            if (i % 9 == 8) {
+                start.setDate(start.getDate()+1);
+                start.setHours(8);
 
-            end.setDate(end.getDate()+1);
-            end.setHours(9);
-        }
-
-        else {
-            start.setHours(start.getHours()+1);
-            end.setHours(end.getHours()+1);
-        }
-    }
-
-
-
-}
-
-function removeEvents() {
-  
-    var calendar = google.calendar;
-  
-    var start = new Date();
-    start.setDate(start.getDate()+1);
-    start.setHours(8,0,0,0);
-  
-    var end = new Date();
-    end.setDate(start.getDate()+30);
-    end.setDate(17,0,0,0)
-  
-    var events = calendar.getEvents(start, end);
-  
-    for (i = 0; i < events.length; i++) {
-        events[i].deleteEvent();
-        console.log("Event deleted");
-    }
-  
-}
-
-// Busy loop to wait for duration milleseconds before running again
-// (To Do: look for function similar to setInterval that's supported)
-// (Thought: is it better to run addWebex constantly without busy looping?)
-function sleep(duration) {
-  
-    var now = new Date().getTime();
-    while (new Date().getTime() < now + duration) {}
-  
-}
-
-// Looks at all new events happening in the next two weeks, and updates the
-// desctiption of events containing "webex" (case-insensitive) in the location
-// (To Do: integrate WebEx API to populate description with new meeting information)
-function addWebex() {
-  
-    console.log("Begin");
-  
-    // Hash table to hold IDs of all events already checked
-    var checkedEvents = {};
-  
-    // Array of all events in current calendar at each step
-    var newEvents = [];
-  
-    // Array of all events that haven't been checked already
-    var uncheckedEvents = [];
-  
-    // Used to find calendar events starting after the current time
-    var start = new Date();
-  
-    // Stops looking for calendar events more than 14 days out
-    var end = new Date();
-    end.setDate(start.getDate()+14);
-  
-    // Gets all calendars that the current user can modify descriptions in
-    // (Note: this should be polled at some interval, right now if the user
-    //  gains/loses access to a calendar it would result in bugs)
-    var calendars = google.calendar;
-  
-    // Number of time steps to be taken
-    for (t = 0; t < 1; t++) {
-  
-        // Check each calendar that the user owns
-        for (i = 0; i < calendars.length; i++) {
-      
-            // Get all events in the next two weeks
-            newEvents = calendars[i].getEvents(start, end);
-            console.log(newEvents);
-      
-            // Go through each event
-            for (e = 0; e < newEvents.length; e++) {
-        
-                // If the current event's ID isn't in the hash table,
-                // add it to the list of events to check locations
-                if (!(newEvents[e].getId() in checkedEvents)) {
-                    // console.log(newEvents[e].getId() + " is not in hash table");
-                    uncheckedEvents.push(newEvents[e]);
-                }
-
+                end.setDate(end.getDate()+1);
+                end.setHours(9);
             }
-      
-            console.log(uncheckedEvents.length + " events to check");
-      
-            // Go through all unchecked events
-            for (j = 0; j < uncheckedEvents.length; j++) {
-        
-                // Store location of current event
-                var location = uncheckedEvents[j].getLocation();
-              
-                // Check if the location contains "webex" and currently has no description
-                if (location.toLowerCase().indexOf("webex") != -1 && uncheckedEvents[j].getDescription() == "") {
-                    
-                    var url = "https://acmetsp-n.webex.com/WBXService/XMLService";
-                                
-                    var xml = '<?xml version="1.0" encoding="utf-8"?> <serv:message xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:serv="http://www.webex.com/schemas/2002/06/service" xmlns:schemaLocation="http://www.webex.com/schemas/2002/06/service http://www.webex.com/schemas/2002/06/service/service.xsd"> <header> <securityContext> <webExID>ridhillo</webExID> <password>P@ss1234</password> <siteName>acmetsp-n</siteName> </securityContext> </header> <body> <bodyContent xsi:type="java:com.webex.service.binding.meeting.CreateMeeting"> <accessControl> <meetingPassword>Cisco123</meetingPassword> </accessControl> <metaData> <confName>Test Meeting</confName> <location></location> </metaData> <participants> <attendees> <attendee> <person> <email>johitchc@cisco.com</email> </person> <emailInvitations>TRUE</emailInvitations> </attendee> </attendees> </participants> <schedule> <startDate /> </schedule> <telephony> <telephonySupport>NONE</telephonySupport> </telephony> <attendeeOptions> <emailInvitations>TRUE</emailInvitations> </attendeeOptions> </bodyContent> </body> </serv:message>'
-                                
-                    var options =
-                    {
-                        "method" : "post",
-                        "payload" : xml,
-                      "contentType" : "application/xml"
-                    };
-                  
-                    var output = UrlFetchApp.fetch(url, options).getContentText();
-                  
-                    var document = XmlService.parse(output);
-                    var root = document.getRootElement();
 
-                    var result = root.getChildren()[0].getChildren()[0].getChildren()[0].getText();
-                    var host = root.getChildren()[1].getChildren()[0].getChildren()[1].getChildren()[0].getText();
-                    var attendee = root.getChildren()[1].getChildren()[0].getChildren()[1].getChildren()[1].getText();
-                  
-                    var ics = UrlFetchApp.fetch(attendee).getContentText();
-                  
-                    var start = ics.indexOf("JOIN WEBEX MEETING") + 20;
-                    var end = ics.indexOf("Meeting number") - 2;
-                  
-                    var link = ics.substring(start, end);
-                  
-                    uncheckedEvents[j].setDescription("Join WebEx meeting: " + link);
-                    console.log(uncheckedEvents[j].getTitle() + " was changed");
-                }
-        
-                // Add the event's ID to the hash table of checked events
-                checkedEvents[uncheckedEvents[j].getId()] = true;
-        
+            else {
+                start.setHours(start.getHours()+1);
+                end.setHours(end.getHours()+1);
             }
+        }
+      }
+
+      function removeEvents() {
+        
+          var calendar = google.calendar;
+        
+          var start = new Date();
+          start.setDate(start.getDate()+1);
+          start.setHours(8,0,0,0);
+        
+          var end = new Date();
+          end.setDate(start.getDate()+30);
+          end.setDate(17,0,0,0)
+        
+          var events = calendar.getEvents(start, end);
+        
+          for (i = 0; i < events.length; i++) {
+              events[i].deleteEvent();
+              console.log("Event deleted");
+          }
+        
+      }
+
+      // Busy loop to wait for duration milleseconds before running again
+      // (To Do: look for function similar to setInterval that's supported)
+      // (Thought: is it better to run addWebex constantly without busy looping?)
+      function sleep(duration) {
+        
+          var now = new Date().getTime();
+          while (new Date().getTime() < now + duration) {}
+        
+      }
+
+      // Looks at all new events happening in the next two weeks, and updates the
+      // desctiption of events containing "webex" (case-insensitive) in the location
+      // (To Do: integrate WebEx API to populate description with new meeting information)
+      function addWebex() {
+        console.log("Begin");
+        
+          // Hash table to hold IDs of all events already checked
+          var checkedEvents = {};
           
-            // Clear the unchecked events for the next time step
-            uncheckedEvents = [];
-    
+          // Array of all events in current calendar at each step
+          var newEvents = [];
+          
+          // Array of all events that haven't been checked already
+          var uncheckedEvents = [];
+          
+          // Used to find calendar events starting after the current time
+          var start = new Date();
+          
+          // Stops looking for calendar events more than 14 days out
+          var end = new Date();
+          end.setDate(start.getDate()+14);
+          
+          // Gets all calendars that the current user can modify descriptions in
+          // (Note: this should be polled at some interval, right now if the user
+          //  gains/loses access to a calendar it would result in bugs)
+          var calendars = google.calendar;
+          
+          // Number of time steps to be taken
+          for (t = 0; t < 1; t++) {
+
+          console.log(calendars.length)
+          
+              // Check each calendar that the user owns
+              for (i = 0; i < calendars.length; i++) {
+              
+                    // Get all events in the next two weeks
+                    newEvents = calendars[i].getEvents(start, end);
+                    console.log(newEvents);
+              
+                    // Go through each event
+                    for (e = 0; e < newEvents.length; e++) {
+                
+                        // If the current event's ID isn't in the hash table,
+                        // add it to the list of events to check locations
+                        if (!(newEvents[e].getId() in checkedEvents)) {
+                            // console.log(newEvents[e].getId() + " is not in hash table");
+                            uncheckedEvents.push(newEvents[e]);
+                        }
+
+                    }
+              
+                    console.log(uncheckedEvents.length + " events to check");
+              
+                    // Go through all unchecked events
+                    for (j = 0; j < uncheckedEvents.length; j++) {
+                
+                        // Store location of current event
+                        var location = uncheckedEvents[j].getLocation();
+                      
+                        // Check if the location contains "webex" and currently has no description
+                        if (location.toLowerCase().indexOf("webex") != -1 && uncheckedEvents[j].getDescription() == "") {
+                            
+                            var url = "https://acmetsp-n.webex.com/WBXService/XMLService";
+                                        
+                            var xml = '<?xml version="1.0" encoding="utf-8"?> <serv:message xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:serv="http://www.webex.com/schemas/2002/06/service" xmlns:schemaLocation="http://www.webex.com/schemas/2002/06/service http://www.webex.com/schemas/2002/06/service/service.xsd"> <header> <securityContext> <webExID>ridhillo</webExID> <password>P@ss1234</password> <siteName>acmetsp-n</siteName> </securityContext> </header> <body> <bodyContent xsi:type="java:com.webex.service.binding.meeting.CreateMeeting"> <accessControl> <meetingPassword>Cisco123</meetingPassword> </accessControl> <metaData> <confName>Test Meeting</confName> <location></location> </metaData> <participants> <attendees> <attendee> <person> <email>johitchc@cisco.com</email> </person> <emailInvitations>TRUE</emailInvitations> </attendee> </attendees> </participants> <schedule> <startDate /> </schedule> <telephony> <telephonySupport>NONE</telephonySupport> </telephony> <attendeeOptions> <emailInvitations>TRUE</emailInvitations> </attendeeOptions> </bodyContent> </body> </serv:message>'
+                                        
+                            var options =
+                            {
+                                "method" : "post",
+                                "payload" : xml,
+                              "contentType" : "application/xml"
+                            };
+                          
+                            var output = UrlFetchApp.fetch(url, options).getContentText();
+                          
+                            var document = XmlService.parse(output);
+                            var root = document.getRootElement();
+
+                            var result = root.getChildren()[0].getChildren()[0].getChildren()[0].getText();
+                            var host = root.getChildren()[1].getChildren()[0].getChildren()[1].getChildren()[0].getText();
+                            var attendee = root.getChildren()[1].getChildren()[0].getChildren()[1].getChildren()[1].getText();
+                          
+                            var ics = UrlFetchApp.fetch(attendee).getContentText();
+                          
+                            var start = ics.indexOf("JOIN WEBEX MEETING") + 20;
+                            var end = ics.indexOf("Meeting number") - 2;
+                          
+                            var link = ics.substring(start, end);
+                          
+                            uncheckedEvents[j].setDescription("Join WebEx meeting: " + link);
+                            console.log(uncheckedEvents[j].getTitle() + " was changed");
+                        }
+                
+                        // Add the event's ID to the hash table of checked events
+                        checkedEvents[uncheckedEvents[j].getId()] = true;
+                
+                    }
+                  
+                    // Clear the unchecked events for the next time step
+                    uncheckedEvents = [];
+            
+                }
+            
+
+
+            console.log("End");
+
+            // Wait one second before executing again
+            // (To Do: find a better way, this is bad)
+    //        sleep(1000);
+                   
         }
-        
 
-
-        console.log("End");
-
-        // Wait one second before executing again
-        // (To Do: find a better way, this is bad)
-//        sleep(1000);
-               
     }
-
-}
 
 function parseXml() {
    var url = 'http://googleappsdeveloper.blogspot.com/atom.xml';
