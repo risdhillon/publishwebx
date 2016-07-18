@@ -21,27 +21,36 @@
         var options =
           {
            "method" : "post",
-            "payload" : xml,
-            "contentType" : "application/xml"
+           "payload" : xml,
+           "contentType" : "application/xml"
           };
                           
+        var params = {};
+        params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.XML;
+        gadgets.io.makeRequest(xml, response, params);
+
+        function response(obj) {
+          var responseText = obj.xml;
+          console.log(responseText);
+        }
+
         var output = UrlFetchApp.fetch(url, options).getContentText();
         console.log(output);
                           
-        var document = XmlService.parse(output);
+        <!-- var document = XmlService.parse(output);
         var root = document.getRootElement();
 
         var result = root.getChildren()[0].getChildren()[0].getChildren()[0].getText();
         var host = root.getChildren()[1].getChildren()[0].getChildren()[1].getChildren()[0].getText();
-        var attendee = root.getChildren()[1].getChildren()[0].getChildren()[1].getChildren()[1].getText();
+        var attendee = root.getChildren()[1].getChildren()[0].getChildren()[1].getChildren()[1].getText(); -->
                           
-        var ics = UrlFetchApp.fetch(attendee).getContentText();
+        <!-- var ics = UrlFetchApp.fetch(attendee).getContentText();
                           
         var start = ics.indexOf("JOIN WEBEX MEETING") + 20;
         var end = ics.indexOf("Meeting number") - 2;
                           
         var link = ics.substring(start, end);
-        console.log(link);
+        console.log(link); -->
                           
       }
 
