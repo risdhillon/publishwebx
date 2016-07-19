@@ -27,10 +27,11 @@
           params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM;  
           var url = "https://raw.githubusercontent.com/risdhillon/publishwebx/master/found.xml";  
           gadgets.io.makeRequest(url, response, params);
-          console.log(gadgets.io.makeRequest(url, response, params));
         };
 
         makeDOMRequest();
+
+        console.log(obj.data);      
 
         console.log("aftermakeDom");
 
