@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="composeEvent Test" height="40" author="Google"
+     author_email="calendar-gadget-questions@google.com">
+   <Require feature="google.calendar-0.5" />
+  </ModulePrefs>
+  <Content type="html">
+    <![CDATA[
+      <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+      <html>
+      <body>
+
+      <script>
+      
+      function runxml() {
+        console.log("hi");
+
+        loadDoc();
+           
+
+        var url = "https://acmetsp-n.webex.com/WBXService/XMLService";
+ 
+        function loadDoc() {
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+              var hijos = xhttp.getElementsByTagNameNS("http://www.webex.com/schemas/2002/06/service", "result");
+              console.log(hijos);
+              console.log("above should work");
+              console.log(xhttp.responseText);
+
+            }
+          };
+          xhttp.open("POST", "https://acmetsp-n.webex.com/WBXService/XMLService", true);
+          xhttp.setRequestHeader("Content-type", "application/xml");
+          xhttp.send('<?xml version="1.0" encoding="utf-8"?> <serv:message xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:serv="http://www.webex.com/schemas/2002/06/service" xmlns:schemaLocation="http://www.webex.com/schemas/2002/06/service http://www.webex.com/schemas/2002/06/service/service.xsd"> <header> <securityContext> <webExID>ridhillo</webExID> <password>P@ss1234</password> <siteName>acmetsp-n</siteName> </securityContext> </header> <body> <bodyContent xsi:type="java:com.webex.service.binding.meeting.CreateMeeting"> <accessControl> <meetingPassword>Cisco123</meetingPassword> </accessControl> <metaData> <confName>Test Meeting</confName> <location></location> </metaData> <participants> <attendees> <attendee> <person> <email>johitchc@cisco.com</email> </person> <emailInvitations>TRUE</emailInvitations> </attendee> </attendees> </participants> <schedule> <startDate /> </schedule> <telephony> <telephonySupport>NONE</telephonySupport> </telephony> <attendeeOptions> <emailInvitations>TRUE</emailInvitations> </attendeeOptions> </bodyContent> </body> </serv:message>');
+        }}
+
+
+      </script>
+
+
+      <center>
+      <button onclick="runxml()">Compose Event</button>
+      </center>
+
+      </body>
+      </html>
+    ]]>
+  </Content>
+</Module>
