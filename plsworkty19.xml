@@ -29,7 +29,8 @@
               console.log(mystring);
               var n = mystring.indexOf("<serv:attendee>");
               var y = mystring.indexOf("</serv:attendee>");
-              console.log(mystring.substring(n+15,y));
+              mystring = mystring.substring(n+15,y);
+              console.log(mystring);
               console.log("above should work");
               console.log(xhttp.responseText);
             }
@@ -52,6 +53,7 @@
             {
               if (yhttp.readyState == 4 && yhttp.status == 200)
               {
+
                 var allText = yhttp.responseText;
                 console.log(allText);
                 console.log("logged");
