@@ -60,7 +60,7 @@
                 console.log("logged");
               }
             }
-            
+            yhttp.send();
           }
 
 
