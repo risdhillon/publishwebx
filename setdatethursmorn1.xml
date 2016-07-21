@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs
+     title="__MSG_Labs_Gadget_Set_Date_Title__"
+     height="61"
+     description="__MSG_Labs_Gadget_Set_Date_Description__"
+     author="Google"
+     author_email="calendar-gadget-questions@google.com">
+    <Require feature="google.calendar-0.5"/>
+    <Require feature="dynamic-height"/>
+    <Locale messages="setdate/messages__en.xml"/>
+    <Locale messages="setdate/messages__ar.xml" lang="ar"/>
+    <Locale messages="setdate/messages__bg.xml" lang="bg"/>
+    <Locale messages="setdate/messages__ca.xml" lang="ca"/>
+    <Locale messages="setdate/messages__cs.xml" lang="cs"/>
+    <Locale messages="setdate/messages__da.xml" lang="da"/>
+    <Locale messages="setdate/messages__de.xml" lang="de"/>
+    <Locale messages="setdate/messages__el.xml" lang="el"/>
+    <Locale messages="setdate/messages__en.xml" lang="en"/>
+    <Locale messages="setdate/messages__en_GB.xml" lang="en-gb"/>
+    <Locale messages="setdate/messages__es.xml" lang="es"/>
+    <Locale messages="setdate/messages__fi.xml" lang="fi"/>
+    <Locale messages="setdate/messages__fr.xml" lang="fr"/>
+    <Locale messages="setdate/messages__hi.xml" lang="hi"/>
+    <Locale messages="setdate/messages__hr.xml" lang="hr"/>
+    <Locale messages="setdate/messages__hu.xml" lang="hu"/>
+    <Locale messages="setdate/messages__in.xml" lang="in"/>
+    <Locale messages="setdate/messages__it.xml" lang="it"/>
+    <Locale messages="setdate/messages__iw.xml" lang="iw"/>
+    <Locale messages="setdate/messages__ja.xml" lang="ja"/>
+    <Locale messages="setdate/messages__ko.xml" lang="ko"/>
+    <Locale messages="setdate/messages__lt.xml" lang="lt"/>
+    <Locale messages="setdate/messages__lv.xml" lang="lv"/>
+    <Locale messages="setdate/messages__nl.xml" lang="nl"/>
+    <Locale messages="setdate/messages__no.xml" lang="no"/>
+    <Locale messages="setdate/messages__pl.xml" lang="pl"/>
+    <Locale messages="setdate/messages__pt_BR.xml" lang="pt-br"/>
+    <Locale messages="setdate/messages__pt_PT.xml" lang="pt-pt"/>
+    <Locale messages="setdate/messages__ro.xml" lang="ro"/>
+    <Locale messages="setdate/messages__ru.xml" lang="ru"/>
+    <Locale messages="setdate/messages__sk.xml" lang="sk"/>
+    <Locale messages="setdate/messages__sl.xml" lang="sl"/>
+    <Locale messages="setdate/messages__sr.xml" lang="sr"/>
+    <Locale messages="setdate/messages__sv.xml" lang="sv"/>
+    <Locale messages="setdate/messages__th.xml" lang="th"/>
+    <Locale messages="setdate/messages__tl.xml" lang="tl"/>
+    <Locale messages="setdate/messages__tr.xml" lang="tr"/>
+    <Locale messages="setdate/messages__uk.xml" lang="uk"/>
+    <Locale messages="setdate/messages__vi.xml" lang="vi"/>
+    <Locale messages="setdate/messages__zh_CN.xml" lang="zh-cn"/>
+    <Locale messages="setdate/messages__zh_TW.xml" lang="zh-tw"/>
+  </ModulePrefs>
+  <Content type="html">
+    <![CDATA[
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body, td, select {
+  font-family: Arial;
+  font-size: 8pt;
+  margin: -1px;
+}
+
+#dateForm {
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 0; /* needed in IE to avoid extra whitespace at the bottom. */
+}
+
+#jumpButton {
+  margin-top: 5px;
+  width:89%;
+}
+</style>
+<script>
+
+var MONTHS = ["__MSG_Jan__", "__MSG_Feb__", "__MSG_Mar__", "__MSG_Apr__",
+    "__MSG_May__", "__MSG_Jun__", "__MSG_Jul__", "__MSG_Aug__",
+    "__MSG_Sep__", "__MSG_Oct__", "__MSG_Nov__", "__MSG_Dec__"];
+
+/**
+ * Generate html for the date picker.
+ * document.write it onto the screen
+ */
+function drawDatePicker() {
+  // Get the current date, so we can set the selected values.
+  var local_now = new Date();
+  var date = local_now.getDate();
+  var month = local_now.getMonth();
+  var year = local_now.getFullYear();
+
+  var html = '<select id=month>';
+  for (var i = 0; i < MONTHS.length; ++i) {
+    html += '<option value=' + i + (month == i ? ' SELECTED' : '') + '>' +
+        MONTHS[i] + '</option>';
+  }
+  html += '</select>';
+
+  html += '<select id=date>';
+  for (var i = 1; i < 32; ++i) {
+    html += '<option value=' + i + (date == i ? ' SELECTED' : '') +
+        '>' + i + '</option>';
+  }
+  html += '</select>';
+
+  // For now, let's use 1980-2030.
+  html += '<select id=year>';
+  for (var i = 1980; i <= 2030; ++i) {
+    html += '<option value=' + i + (year == i ? ' SELECTED' : '') + '>' +
+        i + '</option>';
+  }
+  html += '</select>';
+  document.write(html);
+}
+
+/**
+ * Get the selected value for a specific <select> box.
+ * @param {string} id The id of the select box.
+ */
+function getSelectValue(id) {
+  var select = document.getElementById(id)
+  return select.options[select.selectedIndex].value;
+}
+
+var mystring; 
+var meetingkey;
+      
+function runxml() {
+  console.log("hi");
+
+  loadDoc();
+     
+  
+  var url = "https://acmetsp-n.webex.com/WBXService/XMLService";
+
+  function loadDoc() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (xhttp.readyState == 4 && xhttp.status == 200) {
+        mystring = xhttp.responseText;
+        console.log(mystring);
+        var n = mystring.indexOf("<serv:attendee>");
+        var y = mystring.indexOf("</serv:attendee>");
+        var a = mystring.indexOf("<meet:meetingkey>");
+        var b = mystring.indexOf("</meet:meetingkey>");
+        meetingkey = mystring.substring(a+17, b);
+        mystring = mystring.substring(n+15,y);
+        console.log(mystring);
+        console.log("meetingkey logging:" + meetingkey);
+        console.log("above should work");
+        console.log(xhttp.responseText);
+      }
+    };
+    xhttp.open("POST", "https://acmetsp-n.webex.com/WBXService/XMLService", false);
+    xhttp.setRequestHeader("Content-type", "application/xml");
+    xhttp.send('<?xml version="1.0" encoding="utf-8"?> <serv:message xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:serv="http://www.webex.com/schemas/2002/06/service" xmlns:schemaLocation="http://www.webex.com/schemas/2002/06/service http://www.webex.com/schemas/2002/06/service/service.xsd"> <header> <securityContext> <webExID>ridhillo</webExID> <password>P@ss1234</password> <siteName>acmetsp-n</siteName> </securityContext> </header> <body> <bodyContent xsi:type="java:com.webex.service.binding.meeting.CreateMeeting"> <accessControl> <meetingPassword>Cisco123</meetingPassword> </accessControl> <metaData> <confName>Test Meeting</confName> <location></location> </metaData> <participants> <attendees> <attendee> <person> <email>johitchc@cisco.com</email> </person> <emailInvitations>TRUE</emailInvitations> </attendee> </attendees> </participants> <schedule> <startDate /> </schedule> <telephony> <telephonySupport>NONE</telephonySupport> </telephony> <attendeeOptions> <emailInvitations>TRUE</emailInvitations> </attendeeOptions> </bodyContent> </body> </serv:message>');
+
+
+    //openics();
+  }
+}
+
+
+function compose() {
+  var eventData = {
+    title: 'webbbbb',
+    details: 'Merry Christmas to you!',
+    location: meetingkey,
+    allDay: true,
+
+    startTime: {year: 2016, month: 7, date: 22},
+
+    // Within the data model, the end time is EXCLUSIVE. So the //endTime MUST
+    // be on the day after the start time.
+    endTime: {year: 2016, month: 7, date: 23},
+
+    // Note that attendees MUST be sent in contact format.
+    attendees: [
+    {email: 'davem.gadgets@gmail.com'}
+    ],
+
+  // For more RRULE examples, please see http://www.ietf.org/rfc/rfc2445.txt
+    rrule: 'RRULE:FREQ=YEARLY'
+  };
+  google.calendar.composeEvent(eventData);
+}
+
+</script>
+</head>
+<body>
+
+<form id=dateForm onsubmit="return false">
+  <script>
+  drawDatePicker()
+  </script>
+<button id=jumpButton 
+    onclick="jumpToDate()">__MSG_Labs_Gadget_Set_Date_Button__</button>
+</form>
+
+<script>
+
+// Force the screen to resize
+gadgets.window.adjustHeight();
+
+</script>
+</body>
+</html>
+  ]]></Content>
+</Module>
