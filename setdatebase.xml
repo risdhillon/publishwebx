@@ -52,113 +52,114 @@
   </ModulePrefs>
   <Content type="html">
     <![CDATA[
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" 
-  "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
+      <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+        "http://www.w3.org/TR/html4/strict.dtd">
+      <html>
+      <head>
 
-<style>
-body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
+      <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
 
-body, td, select {
-  font-family: Arial;
-  font-size: 8pt;
-  margin: -1px;
-}
+      body, td, select {
+        font-family: Arial;
+        font-size: 8pt;
+        margin: -1px;
+      }
 
-#dateForm {
-  text-align: center;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  margin-bottom: 0; /* needed in IE to avoid extra whitespace at the bottom. */
-}
+      #dateForm {
+        text-align: center;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        margin-bottom: 0; /* needed in IE to avoid extra whitespace at the bottom. */
+      }
 
-#jumpButton {
-  margin-top: 5px;
-  width:89%;
-}
-</style>
-<script>
+      #jumpButton {
+        margin-top: 5px;
+        width:89%;
+      }
+      </style>
+      <script>
 
-var MONTHS = ["__MSG_Jan__", "__MSG_Feb__", "__MSG_Mar__", "__MSG_Apr__",
-    "__MSG_May__", "__MSG_Jun__", "__MSG_Jul__", "__MSG_Aug__",
-    "__MSG_Sep__", "__MSG_Oct__", "__MSG_Nov__", "__MSG_Dec__"];
+      var MONTHS = ["__MSG_Jan__", "__MSG_Feb__", "__MSG_Mar__", "__MSG_Apr__",
+          "__MSG_May__", "__MSG_Jun__", "__MSG_Jul__", "__MSG_Aug__",
+          "__MSG_Sep__", "__MSG_Oct__", "__MSG_Nov__", "__MSG_Dec__"];
 
-/**
- * Generate html for the date picker.
- * document.write it onto the screen
- */
-function drawDatePicker() {
-  // Get the current date, so we can set the selected values.
-  var local_now = new Date();
-  var date = local_now.getDate();
-  var month = local_now.getMonth();
-  var year = local_now.getFullYear();
+      /**
+       * Generate html for the date picker.
+       * document.write it onto the screen
+       */
+      function drawDatePicker() {
+        // Get the current date, so we can set the selected values.
+        var local_now = new Date();
+        var date = local_now.getDate();
+        var month = local_now.getMonth();
+        var year = local_now.getFullYear();
 
-  var html = '<select id=month>';
-  for (var i = 0; i < MONTHS.length; ++i) {
-    html += '<option value=' + i + (month == i ? ' SELECTED' : '') + '>' +
-        MONTHS[i] + '</option>';
-  }
-  html += '</select>';
+        var html = '<select id=month>';
+        for (var i = 0; i < MONTHS.length; ++i) {
+          html += '<option value=' + i + (month == i ? ' SELECTED' : '') + '>' +
+              MONTHS[i] + '</option>';
+        }
+        html += '</select>';
 
-  html += '<select id=date>';
-  for (var i = 1; i < 32; ++i) {
-    html += '<option value=' + i + (date == i ? ' SELECTED' : '') +
-        '>' + i + '</option>';
-  }
-  html += '</select>';
+        html += '<select id=date>';
+        for (var i = 1; i < 32; ++i) {
+          html += '<option value=' + i + (date == i ? ' SELECTED' : '') +
+              '>' + i + '</option>';
+        }
+        html += '</select>';
 
-  // For now, let's use 1980-2030.
-  html += '<select id=year>';
-  for (var i = 1980; i <= 2030; ++i) {
-    html += '<option value=' + i + (year == i ? ' SELECTED' : '') + '>' +
-        i + '</option>';
-  }
-  html += '</select>';
-  document.write(html);
-}
+        // For now, let's use 1980-2030.
+        html += '<select id=year>';
+        for (var i = 1980; i <= 2030; ++i) {
+          html += '<option value=' + i + (year == i ? ' SELECTED' : '') + '>' +
+              i + '</option>';
+        }
+        html += '</select>';
+        document.write(html);
+      }
 
-/**
- * Get the selected value for a specific <select> box.
- * @param {string} id The id of the select box.
- */
-function getSelectValue(id) {
-  var select = document.getElementById(id)
-  return select.options[select.selectedIndex].value;
-}
+      /**
+       * Get the selected value for a specific <select> box.
+       * @param {string} id The id of the select box.
+       */
+      function getSelectValue(id) {
+        var select = document.getElementById(id)
+        return select.options[select.selectedIndex].value;
+      }
 
-/** Ask calendar to go to the selected date. */
-function jumpToDate() {
-  var year = parseInt(getSelectValue('year'), 10);
-  var month = parseInt(getSelectValue('month'), 10);
-  var date = parseInt(getSelectValue('date'), 10);
-  google.calendar.showDate(year, month + 1, date);
-}
+      /** Ask calendar to go to the selected date. */
+      function jumpToDate() {
+        var year = parseInt(getSelectValue('year'), 10);
+        var month = parseInt(getSelectValue('month'), 10);
+        var date = parseInt(getSelectValue('date'), 10);
+        google.calendar.showDate(year, month + 1, date);
+      }
 
-</script>
-</head>
-<body>
+      </script>
+      </head>
+      <body>
 
-<form id=dateForm onsubmit="return false">
-  <script>
-  drawDatePicker()
-  </script>
-<button id=jumpButton 
-    onclick="jumpToDate()">__MSG_Labs_Gadget_Set_Date_Button__</button>
-</form>
+      <form id=dateForm onsubmit="return false">
+        <script>
+        drawDatePicker()
+        </script>
+      <button id=jumpButton 
+          onclick="jumpToDate()">__MSG_Labs_Gadget_Set_Date_Button__</button>
+      </form>
 
-<script>
+      <script>
 
-// Force the screen to resize
-gadgets.window.adjustHeight();
+      // Force the screen to resize
+      gadgets.window.adjustHeight();
 
-</script>
-</body>
-</html>
-  ]]></Content>
+      </script>
+      </body>
+      </html>
+    ]]>
+  </Content>
 </Module>
