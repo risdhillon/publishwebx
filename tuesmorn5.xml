@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="composeEvent Test" height="40" author="Google"
+     author_email="calendar-gadget-questions@google.com">
+   <Require feature="google.calendar-0.5" />
+  </ModulePrefs>
+  <Content type="html">
+    <![CDATA[
+      <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+      <html>
+      <head>
+        <style>
+        body {
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+        }
+
+        body, td, select {
+          font-family: Arial;
+          font-size: 8pt;
+          margin: -1px;
+        }
+
+        #dateForm {
+          text-align: center;
+          padding-top: 5px;
+          padding-bottom: 5px;
+          margin-bottom: 0; /* needed in IE to avoid extra whitespace at the bottom. */
+        }
+
+        #jumpButton {
+          margin-top: 5px;
+          width:89%;
+        }
+        </style>
+      </head> 
+      <body>
+
+      <script>
+
+      var mystring; 
+      var meetingkey;
+      
+      function runxml() {
+        console.log("hi");
+
+        loadDoc();
+           
+        var format;
+        var url = "https://acmetsp-n.webex.com/WBXService/XMLService";
+
+        function loadDoc() {
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+              mystring = xhttp.responseText;
+              console.log(mystring);
+              var n = mystring.indexOf("<serv:attendee>");
+              var y = mystring.indexOf("</serv:attendee>");
+              var a = mystring.indexOf("<meet:meetingkey>");
+              var b = mystring.indexOf("</meet:meetingkey>");
+              meetingkey = mystring.substring(a+17, b);
+              mystring = mystring.substring(n+15,y);
+              console.log(mystring);
+              console.log("meetingkey logging:" + meetingkey);
+              console.log("above should work");
+              console.log(xhttp.responseText);
+            }
+          };
+          xhttp.open("POST", "https://acmetsp-n.webex.com/WBXService/XMLService", false);
+          xhttp.setRequestHeader("Content-type", "application/xml");
+          xhttp.send('<?xml version="1.0" encoding="utf-8"?> <serv:message xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:serv="http://www.webex.com/schemas/2002/06/service" xmlns:schemaLocation="http://www.webex.com/schemas/2002/06/service http://www.webex.com/schemas/2002/06/service/service.xsd"> <header> <securityContext> <webExID>ridhillo</webExID> <password>P@ss1234</password> <siteName>acmetsp-n</siteName> </securityContext> </header> <body> <bodyContent xsi:type="java:com.webex.service.binding.meeting.CreateMeeting"> <accessControl> <meetingPassword>Cisco123</meetingPassword> </accessControl> <metaData> <confName>Test Meeting</confName> <location></location> </metaData> <participants> <attendees> <attendee> <person> <email>johitchc@cisco.com</email> </person> <emailInvitations>TRUE</emailInvitations> </attendee> </attendees> </participants> <schedule> <startDate>' + format + '</startDate> </schedule> <telephony> <telephonySupport>NONE</telephonySupport> </telephony> <attendeeOptions> <emailInvitations>TRUE</emailInvitations> </attendeeOptions> </bodyContent> </body> </serv:message>');
+
+
+          //openics();
+        }
+      }
+
+      var MONTHS = ["__MSG_Jan__", "__MSG_Feb__", "__MSG_Mar__", "__MSG_Apr__",
+          "__MSG_May__", "__MSG_Jun__", "__MSG_Jul__", "__MSG_Aug__",
+          "__MSG_Sep__", "__MSG_Oct__", "__MSG_Nov__", "__MSG_Dec__"];
+
+      function drawDatePicker() {
+        // Get the current date, so we can set the selected values.
+        console.log("drawing date");
+        var local_now = new Date();
+        var date = local_now.getDate();
+        var month = local_now.getMonth();
+        var year = local_now.getFullYear();
+        format = month + '/' + date + '/' + year + ' ' + '02:00:00';
+        console.log(format);
+
+        var html = '<select id=month>';
+        for (var i = 0; i < MONTHS.length; ++i) {
+        html += '<option value=' + i + (month == i ? ' SELECTED' : '') + '>' +
+          MONTHS[i] + '</option>';
+        }
+        html += '</select>';
+
+        html += '<select id=date>';
+        for (var i = 1; i < 32; ++i) {
+          html += '<option value=' + i + (date == i ? ' SELECTED' : '') +
+            '>' + i + '</option>';
+          }
+          html += '</select>';
+
+        // For now, let's use 1980-2030.
+        html += '<select id=year>';
+        for (var i = 1980; i <= 2030; ++i) {
+          html += '<option value=' + i + (year == i ? ' SELECTED' : '') + '>' +
+              i + '</option>';
+        }
+        html += '</select>';
+        document.write(html);
+        console.log("finished drawing date picker");
+      }
+
+      var year;
+      var month;
+      var date;
+
+      /**
+       * Get the selected value for a specific <select> box.
+       * @param {string} id The id of the select box.
+       */
+      function getSelectValue(id) {
+        var select = document.getElementById(id)
+        return select.options[select.selectedIndex].value;
+      }
+
+      /** Ask calendar to go to the selected date. */
+      function jumpToDate() {
+        year = parseInt(getSelectValue('year'), 10);
+        console.log("trying to jump");
+        month = parseInt(getSelectValue('month'), 10);
+        date = parseInt(getSelectValue('date'), 10);
+        google.calendar.showDate(year, month + 1, date);
+        console.log("about to compose");
+        runxml();
+        compose();
+
+      }
+
+      function compose() {
+        console.log(year);
+        console.log(month);
+        console.log(date);
+        var eventData = {
+          title: 'WebEx Meeting',
+          details: 'Join your webex meeting with the meeting key here: https://acmetsp-n.webex.com',
+          location: meetingkey,
+          allDay: true,
+
+          startTime: {year: year, month: month, date: date},
+
+          // Within the data model, the end time is EXCLUSIVE. So the //endTime MUST
+          // be on the day after the start time.
+          endTime: {year: year, month: month + 1, date: date},
+
+          // Note that attendees MUST be sent in contact format.
+          attendees: [
+          {email: 'davem.gadgets@gmail.com'}
+          ],
+
+        // For more RRULE examples, please see http://www.ietf.org/rfc/rfc2445.txt
+          rrule: 'RRULE:FREQ=YEARLY'
+        };
+        google.calendar.composeEvent(eventData);
+      }
+
+      </script>
+
+
+
+     
+      <form id=dateForm onsubmit="return false">
+        <script>
+        drawDatePicker()
+        </script>
+      <button id=jumpButton 
+          onclick="jumpToDate()">__MSG_Labs_Gadget_Set_Date_Button__</button>
+      </form>
+
+      <script>
+        gadgets.window.adjustHeight();
+      </script> 
+       
+
+
+      </body>
+      </html>
+    ]]>
+  </Content>
+</Module>
+
