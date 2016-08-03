@@ -1,0 +1,2 @@
+Webex integration for Google Calendar - visit https://calendar.google.com/calendar/render?gadgeturl=https://raw.githubusercontent.com/risdhillon/publishwebx/master/rendergadget.xml to add it to google calendar. 
+Also note that you have to change the <sitename> and <username> and <password> credentials for it to work according to your WebEx domain. 
